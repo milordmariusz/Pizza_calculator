@@ -44,7 +44,11 @@ class formView extends StatelessWidget {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter pizza diameter';
-        } else if (value.contains('-') || value.contains(' ')) {
+        } else if (value.contains('-') ||
+            value.contains(' ') ||
+            (value.indexOf('.') != value.lastIndexOf('.')) ||
+            (value.indexOf(',') != value.lastIndexOf(',')) ||
+            (value.contains('.') && (value.contains(',')))) {
           return 'Invalid data';
         }
         return null;
@@ -66,7 +70,11 @@ class formView extends StatelessWidget {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter crust width';
-        } else if (value.contains('-') || value.contains(' ')) {
+        } else if (value.contains('-') ||
+            value.contains(' ') ||
+            (value.indexOf('.') != value.lastIndexOf('.')) ||
+            (value.indexOf(',') != value.lastIndexOf(',')) ||
+            (value.contains('.') && (value.contains(',')))) {
           return 'Invalid data';
         }
         return null;
@@ -88,7 +96,11 @@ class formView extends StatelessWidget {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter price';
-        } else if (value.contains('-') || value.contains(' ')) {
+        } else if (value.contains('-') ||
+            value.contains(' ') ||
+            (value.indexOf('.') != value.lastIndexOf('.')) ||
+            (value.indexOf(',') != value.lastIndexOf(',')) ||
+            (value.contains('.') && (value.contains(',')))) {
           return 'Invalid data';
         }
         return null;
@@ -104,9 +116,9 @@ class formView extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (context) => detailsView(
-                        pizza: double.parse(t1.text),
-                        crust: double.parse(t2.text),
-                        price: double.parse(t3.text),
+                        pizza: double.parse(t1.text.replaceAll(",", ".")),
+                        crust: double.parse(t2.text.replaceAll(",", ".")),
+                        price: double.parse(t3.text.replaceAll(",", ".")),
                       )));
         }
       },
