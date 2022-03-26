@@ -1,3 +1,4 @@
+import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'details_view.dart';
@@ -7,6 +8,7 @@ class formView extends StatelessWidget {
   TextEditingController t1 = TextEditingController(text: '');
   TextEditingController t2 = TextEditingController(text: '');
   TextEditingController t3 = TextEditingController(text: '');
+  TextEditingController t4 = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,8 @@ class formView extends StatelessWidget {
                   _crustWidth(),
                   const SizedBox(height: 20),
                   _price(),
+                  const SizedBox(height: 20),
+                  _currency(),
                   const SizedBox(height: 20),
                   _calculateButton(context)
                 ],
@@ -108,6 +112,33 @@ class formView extends StatelessWidget {
     );
   }
 
+  Widget _currency() {
+    return TextFormField(
+      keyboardType: TextInputType.text,
+      maxLength: 3,
+      cursorColor: Colors.orange,
+      controller: t4,
+      decoration: InputDecoration(
+          icon: Icon(Icons.monetization_on_rounded),
+          hintText: 'Enter currency',
+          labelText: 'Currency',
+          fillColor: Colors.orange,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter currency';
+        } else if (value.contains('-') ||
+            value.contains(' ') ||
+            (value.indexOf('.') != value.lastIndexOf('.')) ||
+            (value.indexOf(',') != value.lastIndexOf(',')) ||
+            (value.contains('.') && (value.contains(',')))) {
+          return 'Invalid data';
+        }
+        return null;
+      },
+    );
+  }
+
   Widget _calculateButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
@@ -119,6 +150,7 @@ class formView extends StatelessWidget {
                         pizza: double.parse(t1.text.replaceAll(",", ".")),
                         crust: double.parse(t2.text.replaceAll(",", ".")),
                         price: double.parse(t3.text.replaceAll(",", ".")),
+                        currency: t4.text,
                       )));
         }
       },
