@@ -67,9 +67,9 @@ class _formViewState extends State<formView> {
                 showCurrencyName: true,
                 showCurrencyCode: true,
                 onSelect: (Currency currency) async {
-                  await UserPreferences.setCurrency(userCurrency);
-                  this.userCurrency = currency.symbol;
-                  setState(() {});
+                    userCurrency = currency.symbol;
+                    await UserPreferences.setCurrency(userCurrency);
+                    setState(() {});
                 },
                 favorite: ['PLN'],
               );
