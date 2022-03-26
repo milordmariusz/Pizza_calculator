@@ -37,7 +37,7 @@ class formView extends StatelessWidget {
       controller: t1,
       decoration: InputDecoration(
           icon: Icon(Icons.local_pizza_outlined),
-          hintText: 'Enter your pizza diameter (cm)',
+          hintText: 'Enter pizza diameter (cm)',
           labelText: 'Pizza',
           fillColor: Colors.orange,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
@@ -63,7 +63,7 @@ class formView extends StatelessWidget {
       controller: t2,
       decoration: InputDecoration(
           icon: Icon(Icons.local_pizza),
-          hintText: 'Enter your crust width (cm)',
+          hintText: 'Enter crust width (cm)',
           labelText: 'Crust',
           fillColor: Colors.orange,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
@@ -89,7 +89,7 @@ class formView extends StatelessWidget {
       controller: t3,
       decoration: InputDecoration(
           icon: Icon(Icons.monetization_on_outlined),
-          hintText: 'Enter your pizza price',
+          hintText: 'Enter pizza price',
           labelText: 'Price',
           fillColor: Colors.orange,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
