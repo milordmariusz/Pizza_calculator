@@ -3,7 +3,13 @@ import 'package:flutter/material.dart';
 
 import 'details_view.dart';
 
-class formView extends StatelessWidget {
+class formView extends StatefulWidget {
+
+  @override
+  _formViewState createState() => _formViewState();
+}
+
+class _formViewState extends State<formView>{
   final _formKey = GlobalKey<FormState>();
   TextEditingController t1 = TextEditingController(text: '');
   TextEditingController t2 = TextEditingController(text: '');
@@ -28,7 +34,7 @@ class formView extends StatelessWidget {
                   const SizedBox(height: 20),
                   _currency(),
                   const SizedBox(height: 20),
-                  _calculateButton(context)
+                  _calculateButton(context),
                 ],
               ),
             )));
@@ -147,11 +153,11 @@ class formView extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (context) => detailsView(
-                        pizza: double.parse(t1.text.replaceAll(",", ".")),
-                        crust: double.parse(t2.text.replaceAll(",", ".")),
-                        price: double.parse(t3.text.replaceAll(",", ".")),
-                        currency: t4.text,
-                      )));
+                    pizza: double.parse(t1.text.replaceAll(",", ".")),
+                    crust: double.parse(t2.text.replaceAll(",", ".")),
+                    price: double.parse(t3.text.replaceAll(",", ".")),
+                    currency: t4.text,
+                  )));
         }
       },
       child: Text('Calculate'),
