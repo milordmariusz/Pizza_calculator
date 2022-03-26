@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pizza_calculator/form_view.dart';
+import 'package:pizza_calculator/user_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  await UserPreferences.init();
 
   runApp(const MyApp());
 }
