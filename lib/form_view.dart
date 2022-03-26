@@ -1,5 +1,6 @@
 import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pizza_calculator/user_preferences.dart';
 
@@ -26,33 +27,30 @@ class _FormViewState extends State<FormView> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-          body: Form(
-              key: _formKey,
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _currencyRow(),
-                        const SizedBox(height: 20),
-                        _pizzaDiameter(),
-                        const SizedBox(height: 20),
-                        _crustWidth(),
-                        const SizedBox(height: 20),
-                        _price(),
-                        const SizedBox(height: 20),
-                        _calculateButton(context),
-                      ],
-                    ),
+    return Scaffold(
+        body: Form(
+            key: _formKey,
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _currencyRow(),
+                      const SizedBox(height: 20),
+                      _pizzaDiameter(),
+                      const SizedBox(height: 20),
+                      _crustWidth(),
+                      const SizedBox(height: 20),
+                      _price(),
+                      const SizedBox(height: 20),
+                      _calculateButton(context),
+                    ],
                   ),
                 ),
-              ))),
-    );
+              ),
+            )));
   }
 
   Widget _currencyRow() {
@@ -104,15 +102,15 @@ class _FormViewState extends State<FormView> {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter pizza diameter';
-        } else if (double.parse(diameterController.text.replaceAll(",", ".")) <
-            double.parse(crustController.text.replaceAll(",", "."))) {
-          return 'Pizza can\'t be smaller than crust';
-        } else if (value.contains('-') ||
+        }else if (value.contains('-') ||
             value.contains(' ') ||
             (value.indexOf('.') != value.lastIndexOf('.')) ||
             (value.indexOf(',') != value.lastIndexOf(',')) ||
             (value.contains('.') && (value.contains(',')))) {
           return 'Invalid data';
+        } else if (double.parse(diameterController.text.replaceAll(",", ".")) <
+            double.parse(crustController.text.replaceAll(",", "."))) {
+          return 'Pizza can\'t be smaller than crust';
         }
         return null;
       },
@@ -134,15 +132,15 @@ class _FormViewState extends State<FormView> {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter crust width';
-        } else if (double.parse(diameterController.text.replaceAll(",", ".")) <
-            double.parse(crustController.text.replaceAll(",", "."))) {
-          return 'Pizza can\'t be smaller than crust';
         } else if (value.contains('-') ||
             value.contains(' ') ||
             (value.indexOf('.') != value.lastIndexOf('.')) ||
             (value.indexOf(',') != value.lastIndexOf(',')) ||
             (value.contains('.') && (value.contains(',')))) {
           return 'Invalid data';
+        } else if (double.parse(diameterController.text.replaceAll(",", ".")) <
+            double.parse(crustController.text.replaceAll(",", "."))) {
+          return 'Pizza can\'t be smaller than crust';
         }
         return null;
       },
