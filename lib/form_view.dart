@@ -1,57 +1,58 @@
 import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pizza_calculator/user_preferences.dart';
 
 import 'details_view.dart';
 
-class formView extends StatefulWidget {
+class FormView extends StatefulWidget {
+
   @override
-  _formViewState createState() => _formViewState();
+  _FormViewState createState() => _FormViewState();
 }
 
-class _formViewState extends State<formView> {
-  final _formKey = GlobalKey<FormState>();
-  TextEditingController t1 = TextEditingController(text: '');
-  TextEditingController t2 = TextEditingController(text: '');
-  TextEditingController t3 = TextEditingController(text: '');
-  //TextEditingController t4 = TextEditingController(text: '');
+class _FormViewState extends State<FormView> {
+  final GlobalKey<FormState>_formKey = GlobalKey<FormState>();
+  TextEditingController diameterController = TextEditingController(text: '');
+  TextEditingController crustController = TextEditingController(text: '');
+  TextEditingController priceController = TextEditingController(text: '');
   String userCurrency = "";
 
   @override
   void initState() {
     super.initState();
-
     userCurrency = UserPreferences.getCurrency() ?? "\u{20AC}";
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Form(
-            key: _formKey,
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _currencyRow(),
-                      const SizedBox(height: 20),
-                      _pizzaDiameter(),
-                      const SizedBox(height: 20),
-                      _crustWidth(),
-                      const SizedBox(height: 20),
-                      _price(),
-                      const SizedBox(height: 20),
-                      // _currency(),
-                      // const SizedBox(height: 20),
-                      _calculateButton(context),
-                    ],
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+          body: Form(
+              key: _formKey,
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _currencyRow(),
+                        const SizedBox(height: 20),
+                        _pizzaDiameter(),
+                        const SizedBox(height: 20),
+                        _crustWidth(),
+                        const SizedBox(height: 20),
+                        _price(),
+                        const SizedBox(height: 20),
+                        _calculateButton(context),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            )));
+              ))),
+    );
   }
 
   Widget _currencyRow() {
@@ -67,9 +68,9 @@ class _formViewState extends State<formView> {
                 showCurrencyName: true,
                 showCurrencyCode: true,
                 onSelect: (Currency currency) async {
-                    userCurrency = currency.symbol;
-                    await UserPreferences.setCurrency(userCurrency);
-                    setState(() {});
+                  userCurrency = currency.symbol;
+                  await UserPreferences.setCurrency(userCurrency);
+                  setState(() {});
                 },
                 favorite: ['PLN'],
               );
@@ -77,6 +78,8 @@ class _formViewState extends State<formView> {
             style: ElevatedButton.styleFrom(
                 primary: Colors.transparent,
                 shadowColor: Colors.transparent,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
                 side: BorderSide(
                   width: 1.0,
                   color: Colors.grey,
@@ -90,7 +93,7 @@ class _formViewState extends State<formView> {
     return TextFormField(
       keyboardType: TextInputType.number,
       cursorColor: Colors.orange,
-      controller: t1,
+      controller: diameterController,
       decoration: InputDecoration(
           icon: Icon(Icons.local_pizza_outlined),
           suffixText: "cm",
@@ -101,8 +104,8 @@ class _formViewState extends State<formView> {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter pizza diameter';
-        } else if (double.parse(t1.text.replaceAll(",", ".")) <
-            double.parse(t2.text.replaceAll(",", "."))) {
+        } else if (double.parse(diameterController.text.replaceAll(",", ".")) <
+            double.parse(crustController.text.replaceAll(",", "."))) {
           return 'Pizza can\'t be smaller than crust';
         } else if (value.contains('-') ||
             value.contains(' ') ||
@@ -120,7 +123,7 @@ class _formViewState extends State<formView> {
     return TextFormField(
       keyboardType: TextInputType.number,
       cursorColor: Colors.orange,
-      controller: t2,
+      controller: crustController,
       decoration: InputDecoration(
           icon: Icon(Icons.local_pizza),
           suffixText: "cm",
@@ -131,8 +134,8 @@ class _formViewState extends State<formView> {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter crust width';
-        } else if (double.parse(t1.text.replaceAll(",", ".")) <
-            double.parse(t2.text.replaceAll(",", "."))) {
+        } else if (double.parse(diameterController.text.replaceAll(",", ".")) <
+            double.parse(crustController.text.replaceAll(",", "."))) {
           return 'Pizza can\'t be smaller than crust';
         } else if (value.contains('-') ||
             value.contains(' ') ||
@@ -150,7 +153,7 @@ class _formViewState extends State<formView> {
     return TextFormField(
       keyboardType: TextInputType.number,
       cursorColor: Colors.orange,
-      controller: t3,
+      controller: priceController,
       decoration: InputDecoration(
           icon: Icon(Icons.monetization_on_outlined),
           suffixText: userCurrency,
@@ -173,49 +176,31 @@ class _formViewState extends State<formView> {
     );
   }
 
-  // Widget _currency() {
-  //   return TextFormField(
-  //     keyboardType: TextInputType.text,
-  //     maxLength: 3,
-  //     cursorColor: Colors.orange,
-  //     controller: t4,
-  //     decoration: InputDecoration(
-  //         icon: Icon(Icons.monetization_on_rounded),
-  //         hintText: 'Enter currency',
-  //         labelText: 'Currency',
-  //         fillColor: Colors.orange,
-  //         border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
-  //     validator: (value) {
-  //       if (value == null || value.isEmpty) {
-  //         return 'Please enter currency';
-  //       } else if (value.contains('-') ||
-  //           value.contains(' ') ||
-  //           (value.indexOf('.') != value.lastIndexOf('.')) ||
-  //           (value.indexOf(',') != value.lastIndexOf(',')) ||
-  //           (value.contains('.') && (value.contains(',')))) {
-  //         return 'Invalid data';
-  //       }
-  //       return null;
-  //     },
-  //   );
-  // }
-
   Widget _calculateButton(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        if (_formKey.currentState!.validate()) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => detailsView(
-                        pizza: double.parse(t1.text.replaceAll(",", ".")),
-                        crust: double.parse(t2.text.replaceAll(",", ".")),
-                        price: double.parse(t3.text.replaceAll(",", ".")),
-                        currency: userCurrency,
-                      )));
-        }
-      },
-      child: Text('Calculate'),
+    return Container(
+      height: 50,
+      width: 140,
+      child: ElevatedButton(
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            FocusScope.of(context).unfocus();
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => detailsView(
+                          pizza: double.parse(diameterController.text.replaceAll(",", ".")),
+                          crust: double.parse(crustController.text.replaceAll(",", ".")),
+                          price: double.parse(priceController.text.replaceAll(",", ".")),
+                          currency: userCurrency,
+                        )));
+          }
+        },
+        child: Text('Calculate',
+            style: GoogleFonts.nunito(
+              fontSize: 20,
+              fontWeight: FontWeight.bold
+            )),
+      ),
     );
   }
 }
