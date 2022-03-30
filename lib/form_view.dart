@@ -7,17 +7,20 @@ import 'package:pizza_calculator/user_preferences.dart';
 import 'details_view.dart';
 
 class FormView extends StatefulWidget {
-
   @override
   _FormViewState createState() => _FormViewState();
 }
 
 class _FormViewState extends State<FormView> {
-  final GlobalKey<FormState>_formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController diameterController = TextEditingController(text: '');
   TextEditingController crustController = TextEditingController(text: '');
   TextEditingController priceController = TextEditingController(text: '');
   String userCurrency = "";
+
+  String radioButtonItem = 'Analysis';
+
+  int id = 1;
 
   @override
   void initState() {
@@ -102,15 +105,13 @@ class _FormViewState extends State<FormView> {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter pizza diameter';
-        }else if (value.contains('-') ||
-            value.contains(' ') ||
-            (value.indexOf('.') != value.lastIndexOf('.')) ||
-            (value.indexOf(',') != value.lastIndexOf(',')) ||
-            (value.contains('.') && (value.contains(',')))) {
+        } else if (double.tryParse(diameterController.text)==null) {
           return 'Invalid data';
-        } else if (double.parse(diameterController.text.replaceAll(",", ".")) <
-            double.parse(crustController.text.replaceAll(",", "."))) {
-          return 'Pizza can\'t be smaller than crust';
+        } else if (double.tryParse(crustController.text)!=null) {
+          if (double.parse(diameterController.text.replaceAll(",", ".")) <=
+              double.parse(crustController.text.replaceAll(",", "."))) {
+            return 'Pizza can\'t be smaller than crust';
+          }
         }
         return null;
       },
@@ -132,15 +133,13 @@ class _FormViewState extends State<FormView> {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter crust width';
-        } else if (value.contains('-') ||
-            value.contains(' ') ||
-            (value.indexOf('.') != value.lastIndexOf('.')) ||
-            (value.indexOf(',') != value.lastIndexOf(',')) ||
-            (value.contains('.') && (value.contains(',')))) {
+        } else if (double.tryParse(crustController.text)==null) {
           return 'Invalid data';
-        } else if (double.parse(diameterController.text.replaceAll(",", ".")) <
-            double.parse(crustController.text.replaceAll(",", "."))) {
-          return 'Pizza can\'t be smaller than crust';
+        } else if (double.tryParse(diameterController.text)!=null) {
+          if (double.parse(diameterController.text.replaceAll(",", ".")) <=
+              double.parse(crustController.text.replaceAll(",", "."))) {
+            return 'Pizza can\'t be smaller than crust';
+          }
         }
         return null;
       },
@@ -162,11 +161,7 @@ class _FormViewState extends State<FormView> {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter price';
-        } else if (value.contains('-') ||
-            value.contains(' ') ||
-            (value.indexOf('.') != value.lastIndexOf('.')) ||
-            (value.indexOf(',') != value.lastIndexOf(',')) ||
-            (value.contains('.') && (value.contains(',')))) {
+        } else if (double.tryParse(value)==null) {
           return 'Invalid data';
         }
         return null;
@@ -186,18 +181,19 @@ class _FormViewState extends State<FormView> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => detailsView(
-                          pizza: double.parse(diameterController.text.replaceAll(",", ".")),
-                          crust: double.parse(crustController.text.replaceAll(",", ".")),
-                          price: double.parse(priceController.text.replaceAll(",", ".")),
+                          pizza: double.parse(
+                              diameterController.text.replaceAll(",", ".")),
+                          crust: double.parse(
+                              crustController.text.replaceAll(",", ".")),
+                          price: double.parse(
+                              priceController.text.replaceAll(",", ".")),
                           currency: userCurrency,
                         )));
           }
         },
         child: Text('Calculate',
-            style: GoogleFonts.nunito(
-              fontSize: 20,
-              fontWeight: FontWeight.bold
-            )),
+            style:
+                GoogleFonts.nunito(fontSize: 20, fontWeight: FontWeight.bold)),
       ),
     );
   }
